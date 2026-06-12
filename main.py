@@ -116,7 +116,52 @@ class AgentEvaluator:
         captured as a failed TestResult with zeroed metrics rather than
         propagating out and crashing the rest of the evaluation suite.
         """
-        # YOUR CODE HERE
+        start_time = datetime.now()
+        try:
+            response, metadata = await agent.handle_query(case.question)
+
+            latency_ms = (datetime.now() - start_time).total_seconds() * 1000
+
+            response_lower = response.lower()
+            keywords_found = []
+            keywords_missing = []
+            for keyword in case.expected_keywords:
+                if keyword.lower() in response_lower:
+                    keywords_found.append(keyword)
+                else:
+                    keywords_missing.append(keyword)
+
+            passed = len(keywords_missing) == 0
+            tokens_used = int(metadata.get("tokens", 0))
+            cost_per_1k = self.COST_PER_1K_TOKENS.get(agent.model, 0.0001)
+            cost_usd = (tokens_used / 1000) * cost_per_1k
+
+            return TestResult(
+                test_id=case.id,
+                question=case.question,
+                response=response,
+                passed=passed,
+                keywords_found=keywords_found,
+                keywords_missing=keywords_missing,
+                tokens_used=tokens_used,
+                latency_ms=latency_ms,
+                cost_usd=cost_usd,
+                timestamp=datetime.now().isoformat(),
+            )
+        except Exception as exc:
+            latency_ms = (datetime.now() - start_time).total_seconds() * 1000
+            return TestResult(
+                test_id=case.id,
+                question=case.question,
+                response=f"ERROR: {exc}",
+                passed=False,
+                keywords_found=[],
+                keywords_missing=list(case.expected_keywords),
+                tokens_used=0,
+                latency_ms=latency_ms,
+                cost_usd=0.0,
+                timestamp=datetime.now().isoformat(),
+            )
 
     async def compare_models(self, models: List[str]) -> Dict[str, Dict]:
         """Compare performance across models."""
