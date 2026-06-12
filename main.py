@@ -260,7 +260,18 @@ class CostTracker:
         self, user_id: str, tokens: int, cost: float, metadata: dict = None
     ):
         """Log a request's cost."""
-        # YOUR CODE HERE
+        entry = {
+            "timestamp": datetime.now().isoformat(),
+            "user_id": user_id,
+            "tokens": tokens,
+            "cost_usd": cost,
+            "metadata": metadata or {},
+        }
+
+        self.costs.append(entry)
+
+        with open(self.log_file, "a") as f:
+            f.write(json.dumps(entry) + "\n")
 
     def get_total_cost(self, user_id: Optional[str] = None) -> float:
         """Get total cost, optionally filtered by user."""

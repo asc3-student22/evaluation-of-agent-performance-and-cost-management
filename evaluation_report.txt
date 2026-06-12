@@ -2,13 +2,13 @@
   AGENT EVALUATION REPORT
 ============================================================
 
-Timestamp: 2026-06-12T13:31:34.034604
+Timestamp: 2026-06-12T13:37:35.184684
 
 SUMMARY:
   Pass Rate: 0/3 (0.0%)
   Total Cost: $0.0001
-  Total Tokens: 379
-  Avg Latency: 3249ms
+  Total Tokens: 365
+  Avg Latency: 1549ms
 
 DETAILED RESULTS:
 
@@ -18,16 +18,15 @@ FAIL | return-policy
 
 - **Returns accepted within 30 days** of delivery
 - Items must be **unused, i...
-  Tokens: 147 | Cost: $0.00002 | Latency: 3819ms
+  Tokens: 143 | Cost: $0.00002 | Latency: 2115ms
   Missing keywords: receipt
 
 FAIL | shipping-time
   Question: How long does shipping take?
-  Response: Shipping time depends on your location and the shipping method selected at checkout.
+  Response: Shipping times depend on your location and the shipping method selected at checkout.
 
-In general:
-- ...
-  Tokens: 135 | Cost: $0.00002 | Latency: 3874ms
+Typical estima...
+  Tokens: 125 | Cost: $0.00002 | Latency: 1633ms
   Missing keywords: 3-5 business days, tracking
 
 FAIL | payment-methods
@@ -37,7 +36,7 @@ FAIL | payment-methods
 - Major credit and debit cards
 - PayPal
 - Apple Pay and Go...
-  Tokens: 97 | Cost: $0.00001 | Latency: 2054ms
+  Tokens: 97 | Cost: $0.00001 | Latency: 899ms
   Missing keywords: credit card
 
 ============================================================
